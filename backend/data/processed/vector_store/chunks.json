@@ -1,0 +1,4 @@
+[
+  "## State and Lifecycle\n\nState is similar to props, but it is private and fully controlled by the component.\n\nState allows React components to respond to user input, server responses, and other changes without rewriting the entire component.\n\n### Using State Correctly\n\nDo not modify state directly. Instead, use setState().\n\n```js\nthis.setState({ count: this.state.count + 1 });\n\n---\n\n### State Updates and Re-rendering\n\nWhen state changes, React automatically re-renders the component and its childr",
+  "omatically re-renders the component and its children.\nThis allows the UI to stay in sync with the underlying data without manual DOM updates.\n\nReact batches multiple state updates together for performance reasons.\nBecause of this, state updates may be asynchronous.\n\nTo correctly update state based on the previous value, use the functional form of setState:\n\n```js\nthis.setState(prevState => ({\n  count: prevState.count + 1\n}));\n"
+]

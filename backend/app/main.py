@@ -15,7 +15,7 @@ class QueryRequest(BaseModel):
 class QueryResponse(BaseModel):
     answer: str
 
-@app.post("/query", response_model=QueryResponse)
+@app.post("/chat", response_model=QueryResponse)
 async def query(request: QueryRequest):
     try:
         if not request.question.strip():

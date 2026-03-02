@@ -1,18 +1,21 @@
-function ChatWindow() {
-    const messages = [
-        { id: 1, role: "user", content: "What is RAG?" },
-        { id: 2, role: "assistant", content: "RAG stands for Retrieval-Augmented Generation." }
-    ]
+const API_BASE = import.meta.env.VITE_API_BASE;
 
-    return (
-        <div>
-            {messages.map((msg) => (
-                <div key={msg.id}>
-                    <strong>{msg.role}:</strong> {msg.content}
-                </div>
-            ))}
-        </div>
-    )
+export async function sendMessage(question) {
+    const url = import.meta.env.DEV ? '/api/chat' : `${API_BASE}/chat`;
+
+    const res = await fetch(url,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+
+        },
+        body: JSON.stringify({ question }),
+    })
+    if (!res.ok) {
+        throw new Error("Failed to send message");
+    }
+    const data = await res.json();
+    return data.answer;
 }
 
-export default ChatWindow;
+export default sendMessage;

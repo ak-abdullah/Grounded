@@ -1,33 +1,21 @@
-function Message({role, content }) {
-    const isUser = role === "user";
-  
-    return (
+function Message({ role, content }) {
+  const isUser = role === "user";
+
+  return (
+    <div
+      className={`flex mb-3 ${isUser ? "justify-end" : "justify-start"}`}
+    >
       <div
-        style={{
-          display: "flex",
-          justifyContent: isUser ? "flex-end" : "flex-start",
-          marginBottom: "12px"
-        }}
+        className={`box-border max-w-[70%] leading-normal text-sm break-words px-4 py-3 rounded-[18px] ${
+          isUser
+            ? "bg-[#2563eb] text-white"
+            : "bg-[#f3f4f6] text-[#111827]"
+        }`}
       >
-        <div
-          style={{
-            padding: "12px 16px",
-            borderRadius: "18px",
-            backgroundColor: isUser ? "#2563eb" : "#f3f4f6",
-            color: isUser ? "#ffffff" : "#111827",
-            maxWidth: "70%",
-            lineHeight: "1.5",
-            fontSize: "14px",
-            wordBreak: "break-word",
-            boxSizing: "border-box"
-          }}
-        >
-          {content}
-        </div>
-        
+        {content}
       </div>
-    );
-  }
-  
-  export default Message;
-  
+    </div>
+  );
+}
+
+export default Message;

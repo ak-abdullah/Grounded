@@ -13,8 +13,8 @@ function App() {
           <h3 className="m-0">Chat</h3>
         </div>
 
-        <div className="flex-1 flex flex-col">
-          <ChatWindow />
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <ChatWindow />
         </div>
       </div>
     </div>

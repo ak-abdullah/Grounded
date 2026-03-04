@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import InputBox from "./InputBox";
 import { sendMessage } from "../services/api";
+import TypingIndicator from "./TypingIndicator";
 
 function ChatWindow() {
   const [messages, setMessages] = useState([
@@ -9,6 +10,11 @@ function ChatWindow() {
     { id: 2, role: "assistant", content: "RAG stands for Retrieval-Augmented Generation." }
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
+  }, [messages.length, isLoading]);
 
   const handleSend = async (text) => {
     const newMessage = {
@@ -16,7 +22,7 @@ function ChatWindow() {
       role: "user",
       content: text
     };
-    setMessages([...messages, newMessage]);
+    setMessages((prev) => [...prev, newMessage])
     
 
     try {
@@ -27,9 +33,15 @@ function ChatWindow() {
         role: "assistant",
         content: reply
       };
-      setMessages([...messages, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
+      const errorMessage = {
+        id: Date.now(),
+        role: "assistant",
+        content: "Sorry, I encountered an error. Please try again."
+      };
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -37,7 +49,7 @@ function ChatWindow() {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex-1 overflow-y-auto p-5 flex flex-col min-h-0">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 flex flex-col min-h-0">
         {messages.map((msg) => (
           <Message
             key={msg.id}
@@ -45,9 +57,9 @@ function ChatWindow() {
             content={msg.content}
           />
         ))}
-         {isLoading && <Message role="assistant" content="..." />}
+         {isLoading && <TypingIndicator />}
       </div>
-      <InputBox onSend={handleSend} />
+      <InputBox onSend={handleSend} disabled={isLoading} />
     </div>
   );
 }

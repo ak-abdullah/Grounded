@@ -2,6 +2,8 @@ import json
 import faiss
 import numpy as np
 from app.config import VECTOR_STORE_DIR, EMBEDDING_DIM
+from pathlib import Path
+
 def build_and_save_index(
     embeddings: list[list[float]],
     chunks: list[str]
@@ -21,6 +23,26 @@ def build_and_save_index(
         json.dump(chunks, f, ensure_ascii=False, indent=2)
     print(f"Saved FAISS index to {index_path}")
     print(f"Saved {len(chunks)} chunks to {chunks_path}")
+
+def build_and_save_index_to_dir(
+    embeddings: list[list[float]],
+    chunks: list[str],
+    output_dir: Path,
+) -> None:
+    """
+    Build a FAISS index and save it (and chunks) to output_dir.
+    Use this for per-session indexes.
+    """
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    index = faiss.IndexFlatL2(EMBEDDING_DIM)
+    vectors = np.array(embeddings).astype("float32")
+    index.add(vectors)
+    index_path = output_dir / "index.faiss"
+    chunks_path = output_dir / "chunks.json"
+    faiss.write_index(index, str(index_path))
+    with open(chunks_path, "w", encoding="utf-8") as f:
+        json.dump(chunks, f, ensure_ascii=False, indent=2)
 
 
 

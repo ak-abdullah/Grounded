@@ -10,6 +10,14 @@ DATA_DIR = BASE_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 VECTOR_STORE_DIR = PROCESSED_DATA_DIR / "vector_store"
+UPLOADS_DIR = DATA_DIR / "uploads"
+
+# =========================
+# Upload limits
+# =========================
+ALLOWED_EXTENSIONS = {".txt", ".md"}
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024   # 10 MB per file
+MAX_FILES_PER_UPLOAD = 20
 
 # =========================
 # Chunking

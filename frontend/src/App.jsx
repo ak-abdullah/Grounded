@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MessageCircle, Upload, Sparkles } from "lucide-react";
 import ChatWindow from "./components/ChatWindow";
 import UploadPage from "./components/UploadPage";
 
@@ -23,38 +24,88 @@ function App() {
     setSessionId(getOrCreateSessionId());
   };
 
-  return (
-    <div className="flex h-screen bg-[#f5f5f5]">
-      <div className="w-[260px] bg-[#111827] text-white p-5 box-border flex flex-col">
-        <h2 className="mt-0">Grounded</h2>
-        <p
-          className="opacity-70 cursor-pointer mt-5 hover:opacity-100"
-          onClick={() => setView("chat")}
-        >
-          Chat
-        </p>
-        <p
-          className="opacity-70 cursor-pointer mt-2 hover:opacity-100"
-          onClick={() => setView("upload")}
-        >
-          Upload
-        </p>
-        <p
-          className="opacity-70 cursor-pointer mt-5 hover:opacity-100"
-          onClick={handleNewChat}
-        >
-          + New Chat
-        </p>
-      </div>
+  const navItemClass = (active) =>
+    `w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 motion-reduce:transition-none flex items-center gap-3 ${
+      active
+        ? "bg-white/10 text-white shadow-sm ring-1 ring-white/10"
+        : "text-slate-400 hover:text-white hover:bg-white/5"
+    }`;
 
-      <div className="flex-1 flex flex-col">
-        <div className="h-[60px] border-b border-[#ddd] flex items-center px-5 bg-white">
-          <h3 className="m-0">
-            {view === "chat" ? "Chat" : "Upload documents"}
-          </h3>
+  const iconClass = "shrink-0 h-[18px] w-[18px] opacity-90";
+
+  return (
+    <div className="flex h-screen bg-slate-100 text-slate-900">
+      <aside
+        className="w-[272px] shrink-0 bg-slate-950 text-white flex flex-col border-r border-slate-800/80 shadow-xl shadow-slate-950/20"
+        aria-label="Workspace navigation"
+      >
+        <div className="p-6 pb-4 border-b border-slate-800/80">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-blue-900/40">
+              G
+            </div>
+            <div>
+              <h1 className="text-base font-semibold tracking-tight text-white m-0">
+                Grounded
+              </h1>
+              <p className="text-xs text-slate-500 m-0 mt-0.5">
+                RAG on your documents
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <nav className="flex-1 p-4 flex flex-col gap-1" aria-label="Primary">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 px-3 mb-2">
+            Workspace
+          </p>
+          <button
+            type="button"
+            onClick={() => setView("chat")}
+            className={navItemClass(view === "chat")}
+            aria-current={view === "chat" ? "page" : undefined}
+          >
+            <MessageCircle className={iconClass} strokeWidth={2} aria-hidden />
+            Chat
+          </button>
+          <button
+            type="button"
+            onClick={() => setView("upload")}
+            className={navItemClass(view === "upload")}
+            aria-current={view === "upload" ? "page" : undefined}
+          >
+            <Upload className={iconClass} strokeWidth={2} aria-hidden />
+            Upload
+          </button>
+        </nav>
+
+        <div className="p-4 border-t border-slate-800/80">
+          <button
+            type="button"
+            onClick={handleNewChat}
+            className="w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 motion-reduce:transition-none flex items-center gap-3"
+          >
+            <Sparkles className={iconClass} strokeWidth={2} aria-hidden />
+            New conversation
+          </button>
+        </div>
+      </aside>
+
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
+        <header className="h-14 shrink-0 border-b border-slate-200/90 bg-white/90 backdrop-blur-md px-6 flex items-center justify-between">
+          <div>
+            <h2 className="text-[15px] font-semibold text-slate-900 m-0 tracking-tight">
+              {view === "chat" ? "Chat" : "Upload documents"}
+            </h2>
+            <p className="text-xs text-slate-500 m-0 mt-0.5">
+              {view === "chat"
+                ? "Ask questions grounded in your uploads"
+                : "Add files to build your knowledge base"}
+            </p>
+          </div>
+        </header>
+
+        <main className="flex-1 flex flex-col min-h-0 overflow-hidden bg-slate-50/50">
           {view === "chat" && (
             <ChatWindow
               messages={messages}
@@ -63,7 +114,7 @@ function App() {
             />
           )}
           {view === "upload" && <UploadPage sessionId={sessionId} />}
-        </div>
+        </main>
       </div>
     </div>
   );

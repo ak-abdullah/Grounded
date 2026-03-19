@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Sparkles } from "lucide-react";
 import Message from "./Message";
 import InputBox from "./InputBox";
 import { sendMessage } from "../services/api";
@@ -43,46 +44,53 @@ function ChatWindow({ messages, setMessages, sessionId }) {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-0">
+    <div className="flex flex-col flex-1 min-h-0 bg-linear-to-b from-slate-50/80 to-white">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-5 flex flex-col min-h-0"
+        className="flex-1 overflow-y-auto min-h-0 px-4 py-6 sm:px-8"
+        aria-label="Chat messages"
       >
-        {messages.length === 0 && !isLoading ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-6 px-4">
-            <h2 className="text-xl font-medium text-gray-800 text-center m-0">
-              How can I help you today?
-            </h2>
-            <p className="text-sm text-gray-500 text-center max-w-md m-0">
-              Ask anything. I’ll use your documents to give accurate answers.
-            </p>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {[
-                "What is RAG?",
-                "Summarize my documents",
-                "Explain in simple terms",
-              ].map((label) => (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => handleSend(label)}
-                  className="px-4 py-2.5 rounded-full text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors"
-                >
-                  {label}
-                </button>
-              ))}
+        <div className="max-w-3xl mx-auto">
+          {messages.length === 0 && !isLoading ? (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
+              <div className="h-16 w-16 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-xl shadow-blue-500/30 mb-8">
+                <Sparkles className="h-8 w-8" strokeWidth={1.75} aria-hidden />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight m-0 mb-3">
+                How can I help you today?
+              </h2>
+              <p className="text-slate-500 text-[15px] max-w-md leading-relaxed m-0 mb-10">
+                Ask anything. I’ll search your uploaded documents and answer with
+                grounded, accurate responses.
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center max-w-lg">
+                {[
+                  "What are the main points?",
+                  "Summarize my documents",
+                  "Explain in simple terms",
+                ].map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => handleSend(label)}
+                    className="px-5 py-2.5 rounded-full text-sm font-medium text-slate-700 bg-white border border-slate-200 shadow-sm hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-900 transition-all duration-200 motion-reduce:transition-none"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          messages.length > 0 && (
-            <>
-              {messages.map((msg) => (
-                <Message key={msg.id} role={msg.role} content={msg.content} />
-              ))}
-              {isLoading && <TypingIndicator />}
-            </>
-          )
-        )}
+          ) : (
+            messages.length > 0 && (
+              <>
+                {messages.map((msg) => (
+                  <Message key={msg.id} role={msg.role} content={msg.content} />
+                ))}
+                {isLoading && <TypingIndicator />}
+              </>
+            )
+          )}
+        </div>
       </div>
       <InputBox onSend={handleSend} disabled={isLoading} />
     </div>

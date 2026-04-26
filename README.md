@@ -12,7 +12,7 @@ A full RAG pipeline built from scratch. No managed vector database, no third-par
 
 ---
 
-## How it works
+## ⚡ How it works
 
 ```mermaid
 flowchart TD
@@ -37,7 +37,7 @@ Each upload creates an isolated session with its own FAISS index. Sessions are U
 
 ---
 
-## Stack
+## 🛠️ Stack
 
 | Layer | Technology |
 |---|---|
@@ -50,7 +50,7 @@ Each upload creates an isolated session with its own FAISS index. Sessions are U
 
 ---
 
-## Project structure
+## 📁 Project structure
 
 ```
 grounded/
@@ -73,7 +73,7 @@ grounded/
 
 ---
 
-## Running locally
+## 🚀 Running locally
 
 **Backend**
 
@@ -95,7 +95,7 @@ Backend runs on `http://localhost:8000`. Frontend on `http://localhost:5173`.
 
 ---
 
-## API
+## 🔌 API
 
 <details>
 <summary>POST /upload</summary>
@@ -133,7 +133,7 @@ GET /health
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
 All settings live in `backend/app/config.py`:
 
@@ -148,7 +148,7 @@ All settings live in `backend/app/config.py`:
 
 ---
 
-## What I learned building this
+## 💡 What I learned building this
 
 Chunking strategy matters more than most people expect. Fixed character chunking with overlap is simple and works well for most plain text. The real tradeoff is chunk size — too small and you lose context, too large and retrieval gets noisy.
 
@@ -158,7 +158,7 @@ FAISS flat L2 search is exact and accurate. It is the right choice here. At scal
 
 ---
 
-## Contact
+## 📬 Contact
 
 Built by Abdullah Khalid
 
